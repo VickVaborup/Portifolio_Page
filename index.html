@@ -19,6 +19,8 @@
           --on-green: #F6F1E3;
           --line: #CFC9B4;
           --chip: #E6EBDD;
+          --page-max: none;
+          --gutter: clamp(16px, 4vw, 56px);
           --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
           --font-body: "Playfair Display", Georgia, "Times New Roman", serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -38,13 +40,14 @@
 
         * { box-sizing: border-box; }
         body {
+          margin: 0;
           background: var(--bg); color: var(--fg);
           font-family: var(--font-body); font-size: 17px; line-height: 1.6;
         }
         .wrap {
           max-width: 1040px; margin-inline: auto;
-          padding-left: max(16px, env(safe-area-inset-left, 0px));
-          padding-right: max(16px, env(safe-area-inset-right, 0px));
+          padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+          padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
         }
         a { color: var(--blue); }
         a:focus-visible, button:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
@@ -53,10 +56,11 @@
         .mono { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 
         /* Header */
-        header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-block: 20px; }
-        .brand { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--fg); text-decoration: none; }
+        header .wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px 24px; padding-block: 20px; }
+        header .brand { justify-self: start; }
+        header .tools { justify-self: end; }        .brand { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--fg); text-decoration: none; }
         .brand span { color: var(--green); }
-        nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+        nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; }
         nav a { color: var(--fg); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
         nav a:hover { color: var(--green); }
         .tools { display: flex; gap: 8px; }
@@ -85,6 +89,8 @@
 
         @media (max-width: 760px) {
           .hero .wrap { gap: 16px; }
+          header .wrap { grid-template-columns: 1fr auto; }
+          header nav { grid-column: 1 / -1; grid-row: 2; }
           .hero h1 { font-size: clamp(1.7rem, 7.4vw, 2.6rem); }
           .hero .lede { font-size: 0.95rem; }
           .hero .actions .btn { padding: 10px 16px; font-size: 0.9rem; }
@@ -111,6 +117,7 @@
 
         /* Sections */
         section { padding-block: 64px; }
+        section > .wrap { position: relative; z-index: 1; }
         section + section { border-top: 1px solid var(--line); }
         .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
         .sec-head h2 { font-size: clamp(1.6rem, 3.6vw, 2.2rem); }
@@ -182,20 +189,20 @@
               <a href="#Educação" data-en="Education">Educação</a>
               <a href="#Contato" data-en="Contact">Contato</a>
             </nav>
-            </div class="tools">
+            <div class="tools">
               <button class="tool" id="lang" type="button" aria-label="Mudar idioma / Change language">EN</button>
               <button class="tool" id="theme" type="button" aria-label="Alternar tema">Tema</button>
             </div>
-            </div>
+          </div>
           </header>  
             
           <main id="topo">
             <div class="hero">
               <div class="wrap">
                 <div>
-                  <p class="status mono"><span data-en="Open to junior / trainee roles and entry-level oportunits">Aberta a Vagas Júnior, Trainee e de Início de Carreira</span></p>
+                  <p class="status mono"><span data-en="Open to junior, trainee roles and entry-level roles">Aberta a Vagas Júnior, Trainee e de Início de Carreira</span></p>
                   <hr>
-                  <h1 class="hero-title"><span data-en="Data, Automation and Coding that works.">Dados, automação e <em>código</em> que funciona.</span></h1>
+                  <h1 class="hero-title"><span data-en="Data, Automation and <em>Code</em> that works.">Dados, automação e <em>código</em> que funciona.</span></h1>
                   <p class="lede" data-en="I'm Vitória, a Systems Analysis and Development student with a technical background in Electronics. I build Power BI dashboards, automate IT processes and study back-end development with Python.">Sou a Vitória, estudante de Análise e Desenvolvimento de Sistemas com base técnica em Eletrônica. Construo painéis em Power BI, automatizo processos de TI e estudo desenvolvimento back-end com Python.</p>
                   <div class="actions">
                     <a class="btn primary" href="https://github.com/VickVaborup" target="_blank" rel="noopener">GitHub</a>
@@ -208,20 +215,8 @@
                 </div>
               </div>
             </div>
-
-
-                <h1>Vitória Lourenço</h1>
-                <hr>
-                <h2>Sobre mim:</h2>
-                <p>Estudante de Análise e Desenvolvimento de Sistemas 
-                    na faculdes Anhanguera.
-                </p>
-                <p>Técnica em Eletrônica formada em 2024 pelo Centro 
-                    Federal de Educação Tecnológica de Minas Gerais (CEFET-MG).
-                </p>
-                <hr>
                 
-          <section id="sobre">
+          <section id="Sobre">
             <div class="wrap">
               <div class="sec-head"><h2 data-en="About">Sobre</h2></div>
               <div class="about">
@@ -238,27 +233,7 @@
             </div>
           </section>
           
-          <section id="Sobre">
-            <div class="wrap">
-              <div class="sec-head"><h2 data-en="About Me Resume">Resumo Sobre Mim</h2></div>
-              <div class="about">
-                <div>
-                  <p data-en="I started in electronics, with a technical degree at CEFET-MG, and moved into software through Systems Analysis and Development at Anhanguera. That path taught me to diagnose problems step by step and to document what I build.">Comecei pela eletrônica, com o curso técnico no CEFET-MG, e cheguei ao software pela graduação em Análise e Desenvolvimento de Sistemas na Anhanguera. Esse caminho me ensinou a diagnosticar problemas por etapas e a documentar o que construo.</p>
-                  <p data-en="Today I work as an IT intern at RHI Magnesita, where I use Power BI, Power Automate and UiPath to monitor KPIs and automate data routines. I'm looking for a junior or trainee role where I can keep growing in data and back-end development.">Hoje sou estagiária de TI na RHI Magnesita, onde uso Power BI, Power Automate e UiPath para acompanhar indicadores e automatizar rotinas de dados. Procuro uma vaga júnior ou trainee para crescer em dados e desenvolvimento back-end.</p>
-                </div>
-                <div class="facts">
-                  <div><b data-en="Belo Horizonte, MG">Belo Horizonte, MG</b><span data-en="Open to remote work">Aberta a trabalho remoto</span></div>
-                  <div><b data-en="Graduation">Formação</b><span data-en="Systems Analysis and Development, Anhanguera">Análise e Desenvolvimento de Sistemas, Anhanguera</span></div>
-                  <div><b data-en="Advanced English">Inglês avançado</b><span data-en="Proficiency certificate from Voxy, 2025">Certificado de proficiência Voxy, 2025</span></div>
-
-                </div>
-              </div>
-            </div>
-          </section>
-
-          
-          <section id="habilidades">
-            <!-- IMAGEM: estrela pontilhada (slot-habilidades). Versão clara e escura. -->
+          <section id="Habilidades">
             <img class="art art-light deco slot-habilidades" src="imagens/circuits.png" alt="" width="435" height="415">
             <img class="art art-dark deco slot-habilidades" src="imagens/circuits.png" alt="" width="435" height="415">
             <div class="wrap">
@@ -293,7 +268,7 @@
                   <h3 data-en="Practices">Práticas</h3>
                   <div class="tags">
                     <span class="tag">Git / GitHub</span>
-                    <span class="tag" data-en="API's Notion and Development"> Noções de Desenvolvimento de APIs</span>
+                    <span class="tag" data-en="API Development Basics"> Noções de Desenvolvimento de APIs</span>
                     <span class="tag" data-en="Data structures and algorithms">Estruturas de dados e algoritmos</span>
                     <span class="tag" data-en="Code Review">Análise de Código</span>
                   </div>
@@ -303,7 +278,7 @@
           </section>
 
           
-          <section id="experiencia">
+          <section id="Experiencia">
             <!-- IMAGEM: circuito (slot-experiencia). Uma só versão, funciona nos dois temas. -->
             <img class="art deco slot-experiencia" src="imagens/circuit.png" alt="" width="216" height="254">
             <div class="wrap">
@@ -341,7 +316,7 @@
             </div>
           </section>
 
-          <section id="projetos">
+          <section id="Projetos">
             <div class="wrap">
               <div class="sec-head"><h2 data-en="Projects">Projetos</h2></div>
               <div class="projects">
@@ -356,7 +331,7 @@
             </div>
           </section>
 
-          <section id="formacao">
+          <section id="Formacao">
             <div class="wrap">
               <div class="sec-head"><h2 data-en="Education">Formação</h2></div>
               <div class="edu">
@@ -381,7 +356,7 @@
             </div>
           </section>
           
-          <section id="contato">
+          <section id="Contato">
             <div class="wrap">
               <div class="contact">
                 <p class="mono" data-en="Contact">Contato</p>
@@ -398,7 +373,7 @@
             </div>
           </section>
 
-        </footer>
+        </main>
 
 
 
@@ -406,10 +381,10 @@
         (function () {
           var root = document.documentElement;
           var els = document.querySelectorAll("[data-en]");
-          els.forEach(function (el) { el.dataset.pt = el.textContent; });
+          els.forEach(function (el) { el.dataset.pt = el.innerHTML; });
 
           function setLang(l) {
-            els.forEach(function (el) { el.textContent = l === "en" ? el.dataset.en : el.dataset.pt; });
+            els.forEach(function (el) { el.innerHTML = l === "en" ? el.dataset.en : el.dataset.pt; });
             root.lang = l === "en" ? "en" : "pt-BR";
             document.getElementById("lang").textContent = l === "en" ? "PT" : "EN";
             document.getElementById("theme").textContent = l === "en" ? "Theme" : "Tema";
@@ -437,7 +412,7 @@
             var en = root.dataset.l === "en";
             function done() {
               btn.textContent = en ? "Copied" : "Copiado";
-              setTimeout(function () { btn.textContent = en ? btn.dataset.en : btn.dataset.pt; }, 1800);
+              setTimeout(function () { btn.innerHTML = en ? btn.dataset.en : btn.dataset.pt; }, 1800);
             }
             function fallback() {
               var r = document.createRange(); r.selectNodeContents(mail);
